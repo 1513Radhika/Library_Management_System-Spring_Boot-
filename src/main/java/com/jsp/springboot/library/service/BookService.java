@@ -1,27 +1,31 @@
 package com.jsp.springboot.library.service;
 
-
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
+
 import com.jsp.springboot.library.entity.Book;
 import com.jsp.springboot.library.entity.BookStatus;
+import com.jsp.springboot.library.utility.ResponseStructure;
 
 public interface BookService {
 
-    Book addBook(Book book);  // Add a new book
+	 ResponseEntity<ResponseStructure<Book>> addBook(Book book);
 
-    Optional<Book> getBookById(Long id);  // Get book by ID
+	    ResponseEntity<ResponseStructure<Optional<Book>>> getBookById(Long id);
 
-    Optional<Book> getBookByIsbn(String isbn);  // Get book by ISBN
+	    ResponseEntity<ResponseStructure<Optional<Book>>> getBookByIsbn(String isbn);
 
-    List<Book> searchBooksByTitle(String title);  // Search books by title
+	    ResponseEntity<ResponseStructure<List<Book>>> searchBooksByTitle(String title);
 
-    List<Book> searchBooksByAuthor(String author);  // Search books by author
+	    ResponseEntity<ResponseStructure<List<Book>>> searchBooksByAuthor(String author);
 
-    List<Book> getBooksByStatus(BookStatus status);  // Get books by status
 
-    void updateBookStatus(Long bookId, BookStatus status);  // Update book status
+		ResponseEntity<ResponseStructure<Book>> updateBookStatus(Long bookId, BookStatus status);
+
+
+		ResponseEntity<ResponseStructure<List<Book>>> getBooksByStatus(BookStatus status);
+
+		
 }
-

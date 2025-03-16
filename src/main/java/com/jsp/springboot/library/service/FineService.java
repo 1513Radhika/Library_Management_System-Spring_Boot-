@@ -1,18 +1,22 @@
 package com.jsp.springboot.library.service;
 
-
-
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 
 import com.jsp.springboot.library.entity.BorrowedBook;
 import com.jsp.springboot.library.entity.Fine;
+import com.jsp.springboot.library.utility.ResponseStructure;
 
 public interface FineService {
 
-    void generateFine(Long borrowedBookId, Double amount);  // Generate fine for a borrowed book
+    ResponseEntity<ResponseStructure<Fine>> generateFine(Long borrowedBookId, Double amount);
 
-    Optional<Fine> getFineByBorrowedBook(BorrowedBook borrowedBook);  // Get fine for a borrowed book
 
-    void payFine(Long fineId);  // Mark fine as paid
+
+    ResponseEntity<ResponseStructure<String>> payFine(Long fineId);
+
+	ResponseEntity<ResponseStructure<Fine>> getFineByBorrowedBook(BorrowedBook borrowedBook);
+
+
+
+	ResponseEntity<ResponseStructure<Fine>> getFineByBorrowedBook(Long borrowedBookId);
 }
-

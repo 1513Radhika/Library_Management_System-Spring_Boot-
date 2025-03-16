@@ -5,60 +5,67 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.jsp.springboot.library.entity.Role;
 import com.jsp.springboot.library.entity.User;
 import com.jsp.springboot.library.service.UserService;
+import com.jsp.springboot.library.utility.ResponseStructure;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")  // Standardized base path
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    // ✅ Register a user
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User registeredUser = userService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<ResponseStructure<User>> registerUser(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
+    // ✅ Get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseStructure<Optional<User>>> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
+    // ✅ Get user by username
     @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = userService.getUserByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseStructure<Optional<User>>> getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
     }
 
+    // ✅ Get user by email
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        Optional<User> user = userService.getUserByEmail(email);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseStructure<Optional<User>>> getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
     }
 
+    // ✅ Get users by role
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable Role role) {
-        List<User> users = userService.getUsersByRole(role);
-        return ResponseEntity.ok(users);
+    public ResponseEntity<ResponseStructure<List<User>>> getUsersByRole(@PathVariable String role) {
+        Role parsedRole;
+        try {
+            parsedRole = Role.valueOf(role.toUpperCase()); // Convert string to Role Enum
+        } catch (IllegalArgumentException e) {
+            ResponseStructure<List<User>> response = new ResponseStructure<>();
+            response.setStatuscode(400);
+            response.setMessage("Invalid role specified.");
+            response.setEntity(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+        return userService.getUsersByRole(parsedRole);
     }
 
+    // ✅ Check if email exists
     @GetMapping("/email-exists/{email}")
-    public ResponseEntity<Boolean> isEmailExists(@PathVariable String email) {
-        boolean exists = userService.isEmailExists(email);
-        return ResponseEntity.ok(exists);
+    public ResponseEntity<ResponseStructure<Boolean>> isEmailExists(@PathVariable String email) {
+        return userService.isEmailExists(email);
     }
-    
-   
 }
+
+   
+
 

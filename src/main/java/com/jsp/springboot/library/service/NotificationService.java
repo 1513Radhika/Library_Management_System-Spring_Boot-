@@ -1,17 +1,17 @@
 package com.jsp.springboot.library.service;
 
-
-
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import com.jsp.springboot.library.entity.Notification;
 import com.jsp.springboot.library.entity.User;
+import com.jsp.springboot.library.utility.ResponseStructure;
 
 public interface NotificationService {
 
-    void sendNotification(Long userId, String message);  // Send notification
+    ResponseEntity<ResponseStructure<String>> sendNotification(Long userId, String message);
 
-    List<Notification> getNotificationsByUser(User user);  // Get notifications for a user
+    ResponseEntity<ResponseStructure<List<Notification>>> getNotificationsByUser(Long userId);
 
-    void markNotificationAsRead(Long notificationId);  // Mark a notification as read
+    ResponseEntity<ResponseStructure<String>> markNotificationAsRead(Long notificationId);
 }

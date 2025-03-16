@@ -3,20 +3,22 @@ package com.jsp.springboot.library.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.jsp.springboot.library.entity.Role;
+import org.springframework.http.ResponseEntity;
 import com.jsp.springboot.library.entity.User;
+import com.jsp.springboot.library.entity.Role;
+import com.jsp.springboot.library.utility.ResponseStructure;
 
 public interface UserService {
 
-    User registerUser(User user);  // Register a new user
+    ResponseEntity<ResponseStructure<User>> registerUser(User user);
 
-    Optional<User> getUserById(Long id);  // Get user by ID
+    ResponseEntity<ResponseStructure<Optional<User>>> getUserById(Long id);
 
-    Optional<User> getUserByUsername(String username);  // Get user by username
+    ResponseEntity<ResponseStructure<Optional<User>>> getUserByUsername(String username);
 
-    Optional<User> getUserByEmail(String email);  // Get user by email
+    ResponseEntity<ResponseStructure<Optional<User>>> getUserByEmail(String email);
 
-    List<User> getUsersByRole(Role role);  // Get users by role
+    ResponseEntity<ResponseStructure<List<User>>> getUsersByRole(Role role);
 
-    boolean isEmailExists(String email);  // Check if email exists
+    ResponseEntity<ResponseStructure<Boolean>> isEmailExists(String email);
 }

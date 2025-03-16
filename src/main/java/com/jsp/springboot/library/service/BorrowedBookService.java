@@ -1,29 +1,28 @@
 package com.jsp.springboot.library.service;
 
-
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import com.jsp.springboot.library.entity.Book;
+import org.springframework.http.ResponseEntity;
 import com.jsp.springboot.library.entity.BorrowedBook;
 import com.jsp.springboot.library.entity.User;
+import com.jsp.springboot.library.entity.Book;
+import com.jsp.springboot.library.utility.ResponseStructure;
+
+import java.time.LocalDate;
 
 public interface BorrowedBookService {
+    ResponseEntity<ResponseStructure<Optional<BorrowedBook>>> getBorrowedBookById(Long id);
 
-    BorrowedBook borrowBook(Long userId, Long bookId, LocalDate dueDate);  // Borrow a book
+    ResponseEntity<ResponseStructure<List<BorrowedBook>>> getBorrowedBooksByUser(Long userId);
 
-    Optional<BorrowedBook> getBorrowedBookById(Long id);  // Get borrowed book by ID
+    ResponseEntity<ResponseStructure<List<BorrowedBook>>> getBorrowedBooksByBook(Long bookId);
 
-    List<BorrowedBook> getBorrowedBooksByUser(User user);  // Get borrowed books by user
+    ResponseEntity<ResponseStructure<List<BorrowedBook>>> getOverdueBooks();
 
-    List<BorrowedBook> getBorrowedBooksByBook(Book book);  // Get borrowed books by book
+    ResponseEntity<ResponseStructure<String>> returnBook(Long borrowedBookId);
 
-    List<BorrowedBook> getOverdueBooks();  // Get overdue books
+    ResponseEntity<ResponseStructure<List<BorrowedBook>>> getUserBorrowedBooks(Long userId);
 
-    void returnBook(Long borrowedBookId);  // Return a borrowed book
-
-	List<BorrowedBook> getUserBorrowedBooks(Long userId);
+    ResponseEntity<ResponseStructure<List<BorrowedBook>>> borrowBooks(Long userId, List<Long> bookIds, LocalDate dueDate);
 }
-
